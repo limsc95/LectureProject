@@ -8,4 +8,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class UserDAO {
 
+    @Autowired
+    private UserMapper userMapper;
+
+    public User findUserByIdAndPw(String user_id, String user_pw) {
+        return userMapper.findUserByIdAndPw(user_id, user_pw);
+    }
 }

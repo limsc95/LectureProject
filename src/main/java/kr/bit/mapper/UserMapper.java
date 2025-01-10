@@ -2,6 +2,7 @@ package kr.bit.mapper;
 
 import kr.bit.beans.User;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -12,4 +13,6 @@ import org.apache.ibatis.annotations.Update;
 // 5. controller 생성 및 service 호출
 public interface UserMapper {
 
+    @Select("select user_idx, user_id, user_pw from lecture_user where user_id=#{user_id} and user_pw=#{user_pw}")
+    User findUserByIdAndPw(@Param("user_id") String user_id, @Param("user_pw") String user_pw);
 }
