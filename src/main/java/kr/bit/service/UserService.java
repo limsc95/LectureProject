@@ -10,4 +10,21 @@ import javax.annotation.Resource;
 @Service
 public class UserService {
 
+    @Autowired
+    private UserDAO userDAO;
+
+    @Resource(name = "loginBean")
+    private User loginUser;
+
+    public boolean login(String user_id, String user_pw) {
+        User user =  userDAO.findUserByIdAndPw(user_id, user_pw);
+
+        if (user == null) {
+            return false;
+        }
+
+        loginUser.setLogin(true);
+        loginUser.setUser_idx(1);
+        return true;
+    }
 }

@@ -1,10 +1,15 @@
 package kr.bit.config;
 
+import kr.bit.mapper.LectureMapper;
+import kr.bit.mapper.UserMapper;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.mapper.MapperFactoryBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.*;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.servlet.config.annotation.*;
 
 
@@ -13,6 +18,7 @@ import org.springframework.web.servlet.config.annotation.*;
 @ComponentScan("kr.bit.controller")
 @ComponentScan("kr.bit.dao")
 @ComponentScan("kr.bit.service")
+@PropertySource("/WEB-INF/properties/db.properties")
 public class ServletAppContext implements WebMvcConfigurer {
 
     @Value("${db.classname}")
@@ -58,6 +64,21 @@ public class ServletAppContext implements WebMvcConfigurer {
         SqlSessionFactory factory = factoryBean.getObject();
         return factory;
     }
+    @Bean
+    public MapperFactoryBean<UserMapper> user_mapper(SqlSessionFactory factory) throws Exception{
+        MapperFactoryBean<UserMapper> fac = new MapperFactoryBean<UserMapper>(UserMapper.class);
+
+        fac.setSqlSessionFactory(factory);
+        return fac;
+    }
+
+    @Bean
+    public MapperFactoryBean<LectureMapper> lecture_mapper(SqlSessionFactory factory) throws Exception{
+        MapperFactoryBean<LectureMapper> fac = new MapperFactoryBean<LectureMapper>(LectureMapper.class);
+
+        fac.setSqlSessionFactory(factory);
+        return fac;
+    }
 
 //    @Bean
 //    public MapperFactoryBean<UserMapper> user_mapper(SqlSessionFactory factory) throws Exception{
@@ -87,19 +108,19 @@ public class ServletAppContext implements WebMvcConfigurer {
 //        registration3.addPathPatterns("/board/delete","/board/modify");
 //    }
 //
-//    @Bean
-//    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer(){
-//        return new PropertySourcesPlaceholderConfigurer();
-//    }
-//
-//    // properties 파일에 있는 값을 뷰에 출력하기 위해
-//    @Bean
-//    public ReloadableResourceBundleMessageSource messageSource(){
-//        ReloadableResourceBundleMessageSource res=new ReloadableResourceBundleMessageSource();
-//        res.setDefaultEncoding("UTF-8");
-//        res.setBasenames("/WEB-INF/properties/error");
-//        return res;
-//    }
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer(){
+        return new PropertySourcesPlaceholderConfigurer();
+    }
+
+    // properties 파일에 있는 값을 뷰에 출력하기 위해
+    @Bean
+    public ReloadableResourceBundleMessageSource messageSource(){
+        ReloadableResourceBundleMessageSource res=new ReloadableResourceBundleMessageSource();
+        res.setDefaultEncoding("UTF-8");
+        res.setBasenames("/WEB-INF/properties/error");
+        return res;
+    }
 }
 
 

@@ -9,6 +9,6 @@ public class HomeController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String home(){  //핸들러 메소드
-        return "redirect:/main";
+        return "redirect:/login";
     }
 }
